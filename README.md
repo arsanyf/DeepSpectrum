@@ -13,6 +13,32 @@ If you use DeepSpectrum or any code from DeepSpectrum in your research work, you
 # Installation
 This program supports pipenv for dependency resolution and installation and we highly recommend you to use it. In addition to the actual tool in `deep-spectrum` there is also another tool which helps with aquiring the pre-trained AlexNet model and converting it to a tensorflow compatible format. This relies on the `caffe-tensorflow` conversion tool found at https://github.com/ethereon/caffe-tensorflow 
 
+## Python installation
+This installs python3.6 and the image libraries necessary for `imread` to install successfully.
+```
+sudo apt install -y python3.6 python3.6-dev libjpeg-dev libpng-dev libtiff-dev
+```
+## Install CUDA
+```
+wget http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/cuda-repo-ubuntu1604_9.0.176-1_amd64.deb
+sudo dpkg -i cuda-repo-ubuntu1604_9.0.176-1_amd64.deb
+sudo apt-key adv --fetch-keys http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1604/x86_64/7fa2af80.pub
+sudo apt-get update
+sudo apt-get install -y cuda=9.0.176-1
+```
+
+## Install cuDNN
+```
+wget http://developer.download.nvidia.com/compute/redist/cudnn/v7.1.2/cudnn-9.0-linux-x64-v7.1.tgz
+tar -xvf cudnn-9.0-linux-x64-v7.1.tgz
+sudo cp -P cuda/include/cudnn.h /usr/local/cuda-9.0/include
+sudo cp -P cuda/lib64/libcudnn* /usr/local/cuda-9.0/lib64/
+sudo chmod a+r /usr/local/cuda-9.0/lib64/libcudnn*
+export PATH=/usr/local/cuda-9.0/bin${PATH:+:${PATH}}
+export LD_LIBRARY_PATH=/usr/local/cuda-9.0/lib64
+```
+
+
 ## Dependencies
 * Python 3.6 with pipenv for the Deep Spectrum tool (`pip install pipenv`)
 * Python 2.7 to download and convert the AlexNet model
@@ -32,13 +58,6 @@ Install the Deep Spectrum tool from the `deep-spectrum/` directory with pipenv (
 ```bash
 cd deep-spectrum
 pipenv --site-packages install
-```
-If you already have installed a recent version (> 1.5) of tensorflow on your system, continue with the [configuration](#configuration). Otherwise, install tensorflow (version 1.8.0 is tested): 
-```bash
-pipenv install tensorflow==1.8.0
-```
-Or the CUDA enabled version:
-```bash
 pipenv install tensorflow-gpu==1.8.0
 ```
 
