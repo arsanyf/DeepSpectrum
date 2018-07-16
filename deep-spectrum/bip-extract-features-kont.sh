@@ -23,7 +23,7 @@ windowSize="2"; hopSize="1"; mode="mel"; nmel="128"; nfft="2048"
 #startTime="1"; endTime="3"
 
 task="bip"
-outputName="$task-ws_$windowSize-hs_$hopSize-mode_$mode"
+outputName="$task-kont-ws_$windowSize-hs_$hopSize-mode_$mode"
 #outputName="$task-clip-level-mode_$mode"
 taskPath="/ssdtemp/ds/experiments"
 audioPath="$taskPath/$task/wav/Kontrol/"
