@@ -67,9 +67,9 @@ for n in $nets; do
 	for l in $layers; do
 		for c in $colorMaps; do		
 			#-t $windowSize $hopSize
-			echo extract_ds_features -i "$audioPath" -t $windowSize $hopSize -cmap $c -mode $mode -o "$featPath-net_$n-l_$l-cm_$c/$outputName-net_$n-l_$l-cm_$c.csv" --no_labels -net $n -layer $l -np 4 -nmel $nmel -nfft $nfft 
+			echo extract_ds_features -i "$audioPath" -t $windowSize $hopSize -cmap $c -mode $mode -o "$featPath-net_$n-l_$l-cm_$c/$outputName-net_$n-l_$l-cm_$c.csv" -el 0 -net $n -layer $l -np 4 -nmel $nmel -nfft $nfft 
 			echo			
-			extract_ds_features -i "$audioPath" -t $windowSize $hopSize -cmap $c -mode $mode -o "$featPath-net_$n-l_$l-cm_$c/$outputName-net_$n-l_$l-cm_$c.csv" --no_labels -net $n -layer $l -np 4 -nmel $nmel -nfft $nfft 
+			extract_ds_features -i "$audioPath" -t $windowSize $hopSize -cmap $c -mode $mode -o "$featPath-net_$n-l_$l-cm_$c/$outputName-net_$n-l_$l-cm_$c.csv" -el 0 -net $n -layer $l -np 4 -nmel $nmel -nfft $nfft 
 		done
 	done
 done
