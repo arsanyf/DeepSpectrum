@@ -16,7 +16,9 @@ This program supports pipenv for dependency resolution and installation and we h
 ## Python installation
 This installs python3.6 and the image libraries necessary for `imread` to install successfully.
 ```
-sudo apt install -y python3.6 python3.6-dev libjpeg-dev libpng-dev libtiff-dev
+sudo add-apt-repository ppa:jonathonf/python-3.6
+sudo apt-get update
+sudo apt-get install -y python3.6 python3.6-dev libjpeg-dev libpng-dev libtiff-dev
 ```
 ## Install CUDA
 ```
