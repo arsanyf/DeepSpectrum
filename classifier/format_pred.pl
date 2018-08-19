@@ -24,13 +24,13 @@ my $ai = 0;
 my $class_list = "";
 open(ARFF, $arffs[0]) or die "$arffs[0]: $!";
 while (<ARFF>) {
-    if (/\@ATTRIBUTE\s+(\S+)\s+([\S\s]+)/) {
+    if (/\@attribute\s+(\S+)\s+([\S\s]+)/) {
         ++$ai;
         if ($ai == $lab_index) {
             $class_list = $2;
         }
     }
-    if (/\@DATA/) { last; }
+    if (/\@data/) { last; }
 }
 close(ARFF);
 if (!$class_list) {
@@ -42,7 +42,7 @@ my @classes = split(",", $class_list);
 map { s/^\s+//; s/\s+$//; } @classes;
 
 open(OUT, '>', $out) or die "$out: $!";
-print OUT "\@relation ComParE2018_Crying_Predictions_$site_name\n";
+print OUT "\@relation mani_Predictions_$site_name\n";
 print OUT "\@attribute instance_name string\n";
 print OUT "\@attribute prediction { ", join(", ", @classes), " }\n";
 
@@ -68,7 +68,7 @@ open(PRED, $pred) or die "$pred: $!";
 my $data = 0;
 my $npred = 0;
 while (<ARFF>) {
-    if (/\@DATA/) {
+    if (/\@data/) {
         $data = 1;
     }
     elsif ($data && !/^\s*$/ && !/^%\s*$/) {

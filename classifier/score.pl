@@ -31,7 +31,7 @@ sub parse_predictions {
     my $i2 = 0;
     while (<REF>) {
         chomp;
-        if (/\@DATA/) {
+        if (/\@data/) {
             $data = 1;
         }
         elsif ($data && !/^\s*$/ && !/^%\s*$/) {
@@ -92,13 +92,13 @@ my $ai = 0;
 my $class_list = "";
 open(ARFF, $ref_arff) or die "$ref_arff: $!";
 while (<ARFF>) {
-    if (/\@ATTRIBUTE\s+(\S+)\s+([\S\s]+)/) {
+    if (/\@attribute\s+(\S+)\s+([\S\s]+)/) {
         ++$ai;
         if ($ai == $lab_index) {
             $class_list = $2;
         }
     }
-    if (/\@DATA/) { last; }
+    if (/\@data/) { last; }
 }
 close(ARFF);
 if (!$class_list) {

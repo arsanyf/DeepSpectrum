@@ -6,15 +6,15 @@
 #set -x
 
 # path to your feature directory (ARFF files)
-feat_dir=/datasets/csvdata/nominal
+feat_dir=/datasets/
 
 # directory where SVM models will be stored
-model_dir=/home/ga83mix2/ds/classification/models/train_loso
+model_dir=/home/user/ds/classification/models/train_loso
 rm -rf $model_dir
 mkdir -p $model_dir
 
 # directory where evaluation results will be stored
-eval_dir=/home/ga83mix2/ds/classification/eval/train_loso
+eval_dir=/home/user/ds/classification/eval/train_loso
 rm -rf $eval_dir
 mkdir -p $eval_dir
 
@@ -91,9 +91,9 @@ for fold in $fold_ids; do
         preds="$preds $pred_file"
 
         # calculate classification scores for foldect
-        perl format_pred.pl $test_arff $pred_file tmp$$.arff $lab
-        perl score.pl $test_arff tmp$$.arff $lab
-        uar=`perl score.pl $test_arff tmp$$.arff $lab | grep ^UAR | cut "-d=" -f2`
+        perl format_pred.pl $test_arff $pred_file tmp$$.arff $lab_nominal
+        perl score.pl $test_arff tmp$$.arff $lab_nominal
+        uar=`perl score.pl $test_arff tmp$$.arff $lab_nominal | grep ^UAR | cut "-d=" -f2`
         uars="$uars $uar"
         echo "UAR: $uar"
 	echo 
@@ -102,16 +102,16 @@ done
 
 # produce ARFF file in submission format
 pred_arff=$eval_dir/$feat_name.SMO.C$C.L$L.arff
-test -f $pred_arff || perl format_pred.pl $arffs $preds $pred_arff $lab
+test -f $pred_arff || perl format_pred.pl $arffs $preds $pred_arff $lab_nominal
 
 echo
 echo "Leave-one-foldect-out cross-validation (LOSO CV)"
 
 # calculate classification scores for all foldects
-ref_arff=../arff/$feat_name.train.arff
+ref_arff=$feat_dir/bip.train.arff
 result_file=$eval_dir/`basename $pred_arff .arff`.result
 if [ ! -s $result_file ]; then
-    perl score.pl $ref_arff $pred_arff $lab | tee $result_file
+    perl score.pl $ref_arff $pred_arff $lab_nominal | tee $result_file
 else
     cat $result_file
 fi
