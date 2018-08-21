@@ -24,7 +24,6 @@ export CLASSPATH=/path/to/weka-3-8-2/weka.jar:/path/to/wekafiles/packages/LibLIN
 ```
 
 ## Run Classification Script
-```
 Convert CSV files that we got from DeepSpectrum into ARFF format.
 ```
 java -Xmx4096m -classpath /path/to/weka.jar weka.core.converters.CSVLoader feature.vector.csv > feature.vector.arff
