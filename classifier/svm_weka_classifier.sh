@@ -6,15 +6,15 @@
 #set -x
 
 # path to your feature directory (ARFF files)
-feat_dir=/datasets/
+feat_dir=/datasets/csvdata/nominal
 
 # directory where SVM models will be stored
-model_dir=/home/user/ds/classification/models/train_loso
+model_dir=/home/ga83mix2/ds/classification/models/train_loso
 rm -rf $model_dir
 mkdir -p $model_dir
 
 # directory where evaluation results will be stored
-eval_dir=/home/user/ds/classification/eval/train_loso
+eval_dir=/home/ga83mix2/ds/classification/eval/train_loso
 rm -rf $eval_dir
 mkdir -p $eval_dir
 
@@ -30,7 +30,7 @@ jvm_mem=8192m
 
 # SVM complexity constant
 C=$1
-test -z "$C" && C=1.0E-5
+test -z "$C" && C=1.0E-4
 
 #epsilon-intensive loss
 L=$2
@@ -75,14 +75,14 @@ for fold in $fold_ids; do
 
 	# train SVM using Weka's SMO, using FilteredClassifier wrapper to ignore first attribute (instance name)
 
-	echo "java -Xmx$jvm_mem -classpath $weka_jar weka.classifiers.meta.FilteredClassifier -v -o -no-cv -c last -t $train_arff -d $svm_model_name -F weka.filters.unsupervised.attribute.Remove -R 1 -W weka.classifiers.functions.SMO -- -C $C -L $L -N 1 -M -P 1.0E-12 -V -1 -W 1 -K weka.classifiers.functions.supportVector.PolyKernel -C 250007 -E 1.0 || exit 1"
-	java -Xmx$jvm_mem -classpath "$weka_jar" weka.classifiers.meta.FilteredClassifier -v -o -no-cv -c last -t "$train_arff" -d "$svm_model_name" -F "weka.filters.unsupervised.attribute.Remove -R 1" -W weka.classifiers.functions.SMO -- -C $C -L $L -N 1 -M -P 1.0E-12 -V -1 -W 1 -K "weka.classifiers.functions.supportVector.PolyKernel -C 250007 -E 1.0" || exit 1
+	echo "java -Xmx$jvm_mem -classpath $CLASSPATH weka.classifiers.meta.FilteredClassifier -v -o -no-cv -c last -t $train_arff -d $svm_model_name -F weka.filters.unsupervised.attribute.Remove -R 1 -W weka.classifiers.functions.LibLINEAR -- -S 1 -C $C -E 0.001 -B 1.0 -L $L -I 1000 || exit 1"
+	java -Xmx$jvm_mem -classpath "$CLASSPATH" weka.classifiers.meta.FilteredClassifier -v -o -no-cv -c last -t "$train_arff" -d "$svm_model_name" -F "weka.filters.unsupervised.attribute.Remove -R 1" -W weka.classifiers.functions.LibLINEAR -- -S 1 -C $C -E 0.001 -B 1.0 -L $L -I 1000 || exit 1
 	echo "finished train model"
 
 	# evaluate SVM and write predictions
 	pred_file=$eval_dir/$feat_name.SMO.C$C.L$L.$fold.pred
 	if [ ! -s "$pred_file" ]; then
-		java -Xmx$jvm_mem -classpath "$weka_jar" weka.classifiers.meta.FilteredClassifier -o -c $lab_nominal -l "$svm_model_name" -T "$test_arff" -p 0 -distribution > "$pred_file" || exit 1
+		java -Xmx$jvm_mem -classpath "$CLASSPATH" weka.classifiers.meta.FilteredClassifier -o -c $lab_nominal -l "$svm_model_name" -T "$test_arff" -p 0 -distribution > "$pred_file" || exit 1
 	fi
 
 	echo "finished evaluate SVM and write predictions"
