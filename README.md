@@ -77,28 +77,3 @@ Mani                          Base Directory of your data
   └─── 3                      Mani level 3
        └─── instanceZ.wav  
 ```
-
-# Classification
-In the directory `classifier` we put a bash script that runs the classification task using Weka. We also put perl scripts for storing and displaying predictions and scores
-
-## Install Weka
-First step is to download and unzip Weka:
-```
-wget https://sourceforge.net/projects/weka/files/weka-3-9/3.9.2/weka-3-9-2.zip
-unzip weka-3-9-2
-```
-Then install java:
-```
-sudo apt install -y software-properties-common
-sudo add-apt-repository ppa:linuxuprising/java
-sudo apt-get update
-sudo apt-get install oracle-java10-installer
-```
-Convert CSV files that we got from DeepSpectrum into ARFF format.
-```
-java -Xmx4096m -classpath /path/to/weka.jar weka.core.converters.CSVLoader feature.vector.csv > feature.vector.arff
-```
-Finally, set the directories for the dataset and the generated results in the file `svm_weka_classifier.sh` lines 9,12, and 17. Then run the script
-```
-./svm_weka_classifier.sh
-```
